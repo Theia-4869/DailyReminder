@@ -41,18 +41,12 @@ def sc_send(sendkey, title, desp='', options={}):
     return result
 
 
-def get_title(time_zone):
-    timezone = pytz.timezone(time_zone)
-    date = datetime.now(timezone)
+def get_title(date):
     return f"💉 吃药提醒 ({date.strftime('%m/%d')})"
 
 
-def get_desp(time_zone):
+def get_desp(date):
     desp = ""
-    
-    timezone = pytz.timezone(time_zone)
-    date = datetime.now(timezone)
-    
     desp += f"🕒 现在是{date.year}年{date.month}月{date.day}日{date.hour}时{date.minute}分\n\n"
     desp += f"🐇感冒了，不要忘记吃💊哦！"
     return desp
@@ -64,5 +58,8 @@ if __name__ == "__main__":
     parser.add_argument("--time-zone", type=str)
     args = parser.parse_args()
     
-    ret = sc_send(args.send_key, get_title(args.time_zone), get_desp(args.time_zone))
+    timezone = pytz.timezone(args.time_zone)
+    date = datetime.now(timezone)
+    
+    ret = sc_send(args.send_key, get_title(date), get_desp(date))
     print(ret['data']['error'])
