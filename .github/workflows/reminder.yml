@@ -31,5 +31,7 @@ jobs:
           architecture: 'x64'
 
       # Runs the remind python script using the runners shell
-      - name: Run a one-line script
-        run: python ./remind.py --send-key ${{ secrets.SEND_KEY_ZQZ }} --time-zone ${{ secrets.TIME_ZONE_ZQZ }}
+      - name: Install dependencies and run script
+        run: |
+          pip install -r requirements.txt
+          python ./remind.py --send-key ${{ secrets.SEND_KEY_ZQZ }} --time-zone ${{ secrets.TIME_ZONE_ZQZ }}
