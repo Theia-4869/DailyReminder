@@ -1,6 +1,6 @@
 # This is the workflow for daily reminds.
 
-name: DailyReminder
+name: DailyReminderCN
 
 # Controls when the workflow will run
 on:
@@ -30,4 +30,4 @@ jobs:
       - name: Install dependencies and run script
         run: |
           pip install -r requirements.txt
-          python ./remind.py --send-key ${{ secrets.SEND_KEY_ZQZ }} --time-zone ${{ secrets.TIME_ZONE_ZQZ }}
+          python ./remind.py --send-key ${{ secrets.SEND_KEY_CN }} --time-zone ${{ secrets.TIME_ZONE_CN }}
