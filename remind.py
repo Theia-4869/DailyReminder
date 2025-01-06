@@ -32,13 +32,18 @@ def sc_send(sendkey, title, desp='', options={}):
 
 
 def get_title(date):
-    return f"💉 吃药提醒 ({date.strftime('%m/%d')})"
+    return f"🍽️ 吃饭提醒 ({date.strftime('%m/%d')})"
 
 
 def get_desp(date):
     desp = ""
     desp += f"🕒 现在是{date.year}年{date.month}月{date.day}日{date.hour}时{date.minute}分\n\n"
-    desp += f"🐇感冒了，不要忘记吃💊哦！"
+    if date.hour < 12:
+        desp += f"🍳 新的一天刚刚开始，不要忘记吃早餐哦！"
+    elif date.hour < 18:
+        desp += f"🍛 工作再忙，也不要忘记吃午饭哦！"
+    else:
+        desp += f"🍝 一天的工作结束了，快去吃点好的犒劳一下自己吧！"
     return desp
 
 
