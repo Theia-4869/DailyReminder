@@ -89,13 +89,13 @@ def get_rates(alpha_vantage_key):
         rate = content.json()['Realtime Currency Exchange Rate']['5. Exchange Rate']
         rates["crypto"][crypto] = float(rate)
     
-    # # future
-    # url = "https://free.xwteam.cn/api/gold/trade"
-    # content = requests.get(url).json()['data']['GJ']
-    # content ={future['Symbol']: future for future in content}
-    # rates["future"]["USD/XAU"] = (float(content['GJ_Au']['BP']) + float(content['GJ_Au']['SP'])) / 2
-    # rates["future"]["USD/XPT"] = (float(content['GJ_Pt']['BP']) + float(content['GJ_Pt']['SP'])) / 2
-    # rates["future"]["USD/XAG"] = (float(content['GJ_Ag']['BP']) + float(content['GJ_Ag']['SP'])) / 2
+    # future
+    url = "https://tools.mgtv100.com/external/v1/pear/goldPrice"
+    content = requests.get(url).json()['data']
+    content ={future['dir']: future for future in content}
+    rates["future"]["USD/XAU"] = float(content['usdgold']['midprice'])
+    rates["future"]["USD/XPT"] = float(content['usdplatinum']['midprice'])
+    rates["future"]["USD/XAG"] = float(content['usdsilver']['midprice'])
     
     # stock
     url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={}&apikey={}"
@@ -113,10 +113,6 @@ def get_title(date):
 
 def get_desp(date, weather_key, alpha_vantage_key, weather_location):
     desp = ""
-        
-    # 日期+时间
-    # if date.hour >= 12:
-    #     raise ValueError("当前时间不是早上，不能发送早安晨报！")
     
     desp += f"🕒 现在是{date.year}年{date.month}月{date.day}日，{weather_location}时间早上{date.hour}时{date.minute}分，星期{weekday_dict[date.weekday()]}，"
     desp += f"{weekday_desp[date.weekday()]}，开启元气满满的一天吧！\n\n"
@@ -156,8 +152,17 @@ def get_desp(date, weather_key, alpha_vantage_key, weather_location):
     if rain[0]:
         desp += f"☔️ 今天可能会下雨，出门记得带伞哦！预计{rain[1]-date.hour}小时后降雨，降水概率为{rain[2]}%。\n\n"
     
-    desp += f"👕 天气指数：穿衣指数-{weather_ind[2]['category']}({weather_ind[2]['level']})，紫外线指数-{weather_ind[4]['category']}({weather_ind[4]['level']})，运动指数-{weather_ind[0]['category']}({weather_ind[0]['level']})。\n\n"
-    
+    weather_ind = {daily['type']: daily for daily in weather_ind}
+    desp += f"👕 天气指数："
+    if len(cityid) == 9:
+        desp += "\n\n"
+        desp += f"穿衣指数：{weather_ind['3']['category']}({weather_ind['3']['level']})，{weather_ind['3']['text']}\n\n"
+        desp += f"紫外线指数：{weather_ind['5']['category']}({weather_ind['5']['level']})，{weather_ind['5']['text']}\n\n"
+        desp += f"运动指数：{weather_ind['1']['category']}({weather_ind['1']['level']})，{weather_ind['1']['text']}\n\n"
+        desp += f"过敏指数：{weather_ind['7']['category']}({weather_ind['7']['level']})，{weather_ind['7']['text']}\n\n"
+    else:
+        desp += f"穿衣指数-{weather_ind['3']['category']}({weather_ind['3']['level']})，紫外线指数-{weather_ind['5']['category']}({weather_ind['5']['level']})，运动指数-{weather_ind['1']['category']}({weather_ind['1']['level']})。\n\n"
+        
     desp += f"📅 未来6日天气预报：\n\n"
     for i, weather_7d in enumerate(weather_7d):
         if i == 0:
@@ -171,13 +176,13 @@ def get_desp(date, weather_key, alpha_vantage_key, weather_location):
         desp += f"{i+1}. {new}\n\n"
     
     # 金融
-    desp += f"💵 实时金融市场数据：\n\n"
+    desp += f"💵 金融数据：\n\n"
     rates = get_rates(alpha_vantage_key)
     desp += f"EUR/CNY: {rates['currency']['EUR/CNY']:6.2f}, EUR/USD: {rates['currency']['EUR/USD']:6.2f}, EUR/GBP: {rates['currency']['EUR/GBP']:6.2f}\n\n"
     desp += f"CNY/USD: {rates['currency']['CNY/USD']:6.2f}, CNY/GBP: {rates['currency']['CNY/GBP']:6.2f}, CNY/SGD: {rates['currency']['CNY/SGD']:6.2f}\n\n"
     desp += f"CNY/JPY: {rates['currency']['CNY/JPY']:6.2f}, CNY/KRW: {rates['currency']['CNY/KRW']:6.2f}, CNY/HKD: {rates['currency']['CNY/HKD']:6.2f}\n\n"
     desp += f"USD/BTC: {rates['crypto']['BTC']:.2f}, USD/ETH: {rates['crypto']['ETH']:.2f}\n\n"
-    # desp += f"USD/XAU: {rates['future']['USD/XAU']:.2f}, USD/XPT: {rates['future']['USD/XPT']:.2f}, USD/XAG: {rates['future']['USD/XAG']:.2f}\n\n"
+    desp += f"USD/XAU: {rates['future']['USD/XAU']:.2f}, USD/XPT: {rates['future']['USD/XPT']:.2f}, USD/XAG: {rates['future']['USD/XAG']:.2f}\n\n"
     desp += f"TSLA: {rates['stock']['TSLA']:.2f}, NVDA: {rates['stock']['NVDA']:.2f}, AAPL: {rates['stock']['AAPL']:.2f}\n\n"
     desp += f"MSFT: {rates['stock']['MSFT']:.2f}, GOOG: {rates['stock']['GOOG']:.2f}, META: {rates['stock']['META']:.2f}\n\n"
     
