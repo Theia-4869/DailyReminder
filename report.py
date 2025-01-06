@@ -89,13 +89,13 @@ def get_rates(alpha_vantage_key):
         rate = content.json()['Realtime Currency Exchange Rate']['5. Exchange Rate']
         rates["crypto"][crypto] = float(rate)
     
-    # future
-    url = "https://free.xwteam.cn/api/gold/trade"
-    content = requests.get(url).json()['data']['GJ']
-    content ={future['Symbol']: future for future in content}
-    rates["future"]["USD/XAU"] = (float(content['GJ_Au']['BP']) + float(content['GJ_Au']['SP'])) / 2
-    rates["future"]["USD/XPT"] = (float(content['GJ_Pt']['BP']) + float(content['GJ_Pt']['SP'])) / 2
-    rates["future"]["USD/XAG"] = (float(content['GJ_Ag']['BP']) + float(content['GJ_Ag']['SP'])) / 2
+    # # future
+    # url = "https://free.xwteam.cn/api/gold/trade"
+    # content = requests.get(url).json()['data']['GJ']
+    # content ={future['Symbol']: future for future in content}
+    # rates["future"]["USD/XAU"] = (float(content['GJ_Au']['BP']) + float(content['GJ_Au']['SP'])) / 2
+    # rates["future"]["USD/XPT"] = (float(content['GJ_Pt']['BP']) + float(content['GJ_Pt']['SP'])) / 2
+    # rates["future"]["USD/XAG"] = (float(content['GJ_Ag']['BP']) + float(content['GJ_Ag']['SP'])) / 2
     
     # stock
     url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={}&apikey={}"
@@ -177,7 +177,7 @@ def get_desp(date, weather_key, alpha_vantage_key, weather_location):
     desp += f"CNY/USD: {rates['currency']['CNY/USD']:6.2f}, CNY/GBP: {rates['currency']['CNY/GBP']:6.2f}, CNY/SGD: {rates['currency']['CNY/SGD']:6.2f}\n\n"
     desp += f"CNY/JPY: {rates['currency']['CNY/JPY']:6.2f}, CNY/KRW: {rates['currency']['CNY/KRW']:6.2f}, CNY/HKD: {rates['currency']['CNY/HKD']:6.2f}\n\n"
     desp += f"USD/BTC: {rates['crypto']['BTC']:.2f}, USD/ETH: {rates['crypto']['ETH']:.2f}, USD/USDT: {rates['crypto']['USDT']:.5f}\n\n"
-    desp += f"USD/XAU: {rates['future']['USD/XAU']:.2f}, USD/XPT: {rates['future']['USD/XPT']:.2f}, USD/XAG: {rates['future']['USD/XAG']:.2f}\n\n"
+    # desp += f"USD/XAU: {rates['future']['USD/XAU']:.2f}, USD/XPT: {rates['future']['USD/XPT']:.2f}, USD/XAG: {rates['future']['USD/XAG']:.2f}\n\n"
     desp += f"TSLA: {rates['stock']['TSLA']:.2f}, NVDA: {rates['stock']['NVDA']:.2f}, AAPL: {rates['stock']['AAPL']:.2f}\n\n"
     desp += f"MSFT: {rates['stock']['MSFT']:.2f}, GOOG: {rates['stock']['GOOG']:.2f}, META: {rates['stock']['META']:.2f}\n\n"
     
