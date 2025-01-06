@@ -1,6 +1,6 @@
 # This is the workflow for daily reminds.
 
-name: DailyReminderCN
+name: DailyReporterCN
 
 # Controls when the workflow will run
 on:
