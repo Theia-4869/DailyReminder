@@ -80,7 +80,7 @@ def get_rates(alpha_vantage_key):
     for currency in ['CNY/EUR', 'EUR/USD', 'EUR/GBP', 'CNY/USD', 'CNY/GBP', 'CNY/SGD', 'CNY/JPY', 'CNY/KRW', 'CNY/HKD']:
         content = requests.get(url.format(currency.split('/')[1], currency.split('/')[0], alpha_vantage_key))
         rate = content.json()['Realtime Currency Exchange Rate']['5. Exchange Rate']
-        rates["currency"][currency] = float(rate)
+        rates["currency"][currency] = float(rate) * 100.
     
     # crypto
     url = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency={}&to_currency=USD&apikey={}"
@@ -173,7 +173,7 @@ def get_desp(date, weather_key, alpha_vantage_key, weather_location):
     # 金融
     desp += f"💵 实时金融市场数据：\n\n"
     rates = get_rates(alpha_vantage_key)
-    desp += f"EUR/CNY: {rates['currency']['CNY/EUR']:6.2f}, EUR/USD: {rates['currency']['EUR/USD']:6.2f}, EUR/GBP: {rates['currency']['EUR/GBP']:6.2f}\n\n"
+    desp += f"EUR/CNY: {rates['currency']['EUR/CNY']:6.2f}, EUR/USD: {rates['currency']['EUR/USD']:6.2f}, EUR/GBP: {rates['currency']['EUR/GBP']:6.2f}\n\n"
     desp += f"CNY/USD: {rates['currency']['CNY/USD']:6.2f}, CNY/GBP: {rates['currency']['CNY/GBP']:6.2f}, CNY/SGD: {rates['currency']['CNY/SGD']:6.2f}\n\n"
     desp += f"CNY/JPY: {rates['currency']['CNY/JPY']:6.2f}, CNY/KRW: {rates['currency']['CNY/KRW']:6.2f}, CNY/HKD: {rates['currency']['CNY/HKD']:6.2f}\n\n"
     desp += f"USD/BTC: {rates['crypto']['BTC']:.2f}, USD/ETH: {rates['crypto']['ETH']:.2f}\n\n"
