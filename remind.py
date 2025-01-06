@@ -5,16 +5,6 @@ import requests
 from datetime import datetime
 
 
-# send_keys = {
-#     "zhangqizhe": 'SCT93347TMIJdNWyZgmrMWGK7kIZvA5nb',
-#     "chenning": 'SCT266074TMuRnhHWwe8oNd6BSEFNeA6cd',
-# }
-
-# time_zones = {
-#     "zhangqizhe": 'Asia/Shanghai',
-#     "chenning": 'Europe/Paris',
-# }
-
 
 def sc_send(sendkey, title, desp='', options={}):
 
