@@ -84,7 +84,7 @@ def get_rates(alpha_vantage_key):
     
     # crypto
     url = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency={}&to_currency=USD&apikey={}"
-    for crypto in ['BTC', 'ETH', 'USDT']:
+    for crypto in ['BTC', 'ETH']:
         content = requests.get(url.format(crypto, alpha_vantage_key))
         rate = content.json()['Realtime Currency Exchange Rate']['5. Exchange Rate']
         rates["crypto"][crypto] = float(rate)
@@ -176,7 +176,7 @@ def get_desp(date, weather_key, alpha_vantage_key, weather_location):
     desp += f"EUR/CNY: {rates['currency']['CNY/EUR']:6.2f}, EUR/USD: {rates['currency']['EUR/USD']:6.2f}, EUR/GBP: {rates['currency']['EUR/GBP']:6.2f}\n\n"
     desp += f"CNY/USD: {rates['currency']['CNY/USD']:6.2f}, CNY/GBP: {rates['currency']['CNY/GBP']:6.2f}, CNY/SGD: {rates['currency']['CNY/SGD']:6.2f}\n\n"
     desp += f"CNY/JPY: {rates['currency']['CNY/JPY']:6.2f}, CNY/KRW: {rates['currency']['CNY/KRW']:6.2f}, CNY/HKD: {rates['currency']['CNY/HKD']:6.2f}\n\n"
-    desp += f"USD/BTC: {rates['crypto']['BTC']:.2f}, USD/ETH: {rates['crypto']['ETH']:.2f}, USD/USDT: {rates['crypto']['USDT']:.5f}\n\n"
+    desp += f"USD/BTC: {rates['crypto']['BTC']:.2f}, USD/ETH: {rates['crypto']['ETH']:.2f}\n\n"
     # desp += f"USD/XAU: {rates['future']['USD/XAU']:.2f}, USD/XPT: {rates['future']['USD/XPT']:.2f}, USD/XAG: {rates['future']['USD/XAG']:.2f}\n\n"
     desp += f"TSLA: {rates['stock']['TSLA']:.2f}, NVDA: {rates['stock']['NVDA']:.2f}, AAPL: {rates['stock']['AAPL']:.2f}\n\n"
     desp += f"MSFT: {rates['stock']['MSFT']:.2f}, GOOG: {rates['stock']['GOOG']:.2f}, META: {rates['stock']['META']:.2f}\n\n"
